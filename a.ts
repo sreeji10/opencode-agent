@@ -119,6 +119,7 @@ async function main() {
 
   let sessionId = await createSession(client, options.title)
   let isClosing = false
+  let exitCode: number | undefined
 
   const cleanup = () => {
     if (isClosing) return
@@ -161,6 +162,7 @@ async function main() {
         }
 
         if (command.name === "/exit") {
+          exitCode = 0
           break
         }
 
@@ -218,6 +220,10 @@ async function main() {
     }
   } finally {
     cleanup()
+  }
+
+  if (typeof exitCode === "number") {
+    process.exit(exitCode)
   }
 }
 
